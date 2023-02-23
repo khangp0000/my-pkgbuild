@@ -1,4 +1,4 @@
-pkgbase = shoko-web-dev-bin
+pkgbase = shoko-web-dev-bin-git
 	pkgdesc = Web ui for shoko-server
 	pkgver = v2.0.0_dev.50
 	pkgrel = 1
@@ -9,4 +9,4 @@ pkgbase = shoko-web-dev-bin
 	makedepends = unzip
 	makedepends = curl
 
-pkgname = shoko-web-dev-bin
+pkgname = shoko-web-dev-bin-git

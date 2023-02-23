@@ -1,6 +1,6 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
-pkgname=shoko-web-dev-bin
+pkgname=shoko-web-dev-bin-git
 pkgver=v2.0.0_dev.50
 pkgrel=1
 pkgdesc="Web ui for shoko-server"
