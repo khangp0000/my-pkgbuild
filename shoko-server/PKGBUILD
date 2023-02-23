@@ -29,21 +29,26 @@ sha256sums=('SKIP'
 prepare() {
 	cd "$srcdir/ShokoServer"
     git -c protocol.file.allow=always submodule update --init --recursive
+}
+
+pkgver() {
+    >&2 echo "cd-ing into $srcdir/ShokoServer"
+	cd "$srcdir/ShokoServer"
+    rel_tag=$(git --no-pager tag --sort=-creatordate | grep -P "^[vV]\d+\.\d+\.\d+(\.\d+)?$" | head -n 1)
+	git describe --tags --match "$rel_tag" | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+build() {
+    cd "$srcdir/ShokoServer"
+
     rel_tag=$(git --no-pager tag --sort=-creatordate | grep -P "^[vV]\d+\.\d+\.\d+(\.\d+)?$" | head -n 1)
     rel_version=$(echo $rel_tag | sed -E 's/^([vV][0-9]+\.[0-9]+\.[0-9]+)$/\1.0/')
 
     # Remove 'v'
     rel_version=${rel_version:1}
     rel_sha=$(git rev-parse HEAD)
-}
 
-pkgver() {
-	cd "$srcdir/ShokoServer"
-	git describe --tags --match "$rel_tag" | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
-}
-
-build() {
-    cd "$srcdir/ShokoServer"
+    # Build
     dotnet publish -o build -c Release -r linux-x64 Shoko.CLI "/p:Version=\"$rel_version\",InformationalVersion=\"channel=dev,commit=$rel_sha\""
 
     # webui is part of dependency
