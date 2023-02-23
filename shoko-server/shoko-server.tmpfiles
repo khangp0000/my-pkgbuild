@@ -1,0 +1,4 @@
+d /var/lib/shoko 0755 shoko shoko
+d /var/lib/shoko/.shoko 0755 shoko shoko
+d /var/lib/shoko/.shoko/Shoko.CLI 0755 shoko shoko
+L /var/lib/shoko/.shoko/Shoko.CLI/webui - - - - /usr/lib/shoko-server/webui

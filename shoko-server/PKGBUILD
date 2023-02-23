@@ -1,0 +1,60 @@
+# Maintainer: Khang Phan <khangp0000@gmail.com>
+
+pkgname=shoko-server-git
+pkgver=v4.1.2.r661.g79486a4b
+pkgrel=1
+pkgdesc="Anime cataloging service"
+depends=(mediainfo rhash shoko-web-dev-bin)
+optdepends=(
+  'mono: to use avdump2'
+)
+arch=('x86_64')
+url="https://github.com/ShokoAnime/ShokoServer"
+license=('MIT')
+makedepends=(git grep sed dotnet-sdk)
+source=('git+https://github.com/ShokoAnime/ShokoServer.git'
+        'git+https://github.com/ShokoAnime/Shoko.Commons.git'
+        'git+https://github.com/ShokoAnime/Shoko.Models.git'
+        'shoko-server.service'
+        'shoko-server.sysusers'
+        'shoko-server.tmpfiles')
+
+sha256sums=('SKIP'
+            'SKIP'
+            'SKIP'
+            '57d271c83b7a8f36739186e4a1a6d3b2cb4508b9580dbc86603a29927d6e412d'
+            '09709df04602d42e67cb3c83d65c1c33c7e7ee0303d67002a38aa31b09250ad5'
+            '3665bddb83f981cd9af209516495d17e2377b640427e180db8c637aa03282626')
+
+prepare() {
+	cd "$srcdir/ShokoServer"
+    git -c protocol.file.allow=always submodule update --init --recursive
+    rel_tag=$(git --no-pager tag --sort=-creatordate | grep -P "^[vV]\d+\.\d+\.\d+(\.\d+)?$" | head -n 1)
+    rel_version=$(echo $rel_tag | sed -E 's/^([vV][0-9]+\.[0-9]+\.[0-9]+)$/\1.0/')
+
+    # Remove 'v'
+    rel_version=${rel_version:1}
+    rel_sha=$(git rev-parse HEAD)
+}
+
+pkgver() {
+	cd "$srcdir/ShokoServer"
+	git describe --tags --match "$rel_tag" | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+build() {
+    cd "$srcdir/ShokoServer"
+    dotnet publish -o build -c Release -r linux-x64 Shoko.CLI "/p:Version=\"$rel_version\",InformationalVersion=\"channel=dev,commit=$rel_sha\""
+
+    # webui is part of dependency
+    rm -rf "$srcdir/ShokoServer/build/webui/"
+}
+
+package() {
+    mkdir -p "$pkgdir/usr/lib"
+    cp -dr --no-preserve='ownership' "$srcdir/ShokoServer/build" "$pkgdir/usr/lib/shoko-server/"
+
+    install -D -m 644 "${srcdir}/shoko-server.sysusers" "${pkgdir}/usr/lib/sysusers.d/shoko-server.conf"
+    install -D -m 644 "${srcdir}/shoko-server.service" "${pkgdir}/usr/lib/systemd/system/shoko-server.service"
+    install -D -m 644 "${srcdir}/shoko-server.tmpfiles" "${pkgdir}/usr/lib/tmpfiles.d/shoko-server.conf"
+}

@@ -1,0 +1,12 @@
+pkgbase = shoko-web-dev-bin
+	pkgdesc = Web ui for shoko-server
+	pkgver = v2.0.0_dev.50
+	pkgrel = 1
+	url = https://github.com/ShokoAnime/ShokoServer-WebUI
+	arch = any
+	license = unknown
+	makedepends = jq
+	makedepends = unzip
+	makedepends = curl
+
+pkgname = shoko-web-dev-bin

@@ -1,0 +1,18 @@
+# Be sure to use `systemctl edit shoko-server` to modify this service with an override.conf because
+# direct changes will be overwritten by package updates.
+
+[Unit]
+Description=Shoko server service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=shoko
+Group=shoko
+SyslogIdentifier=shoko
+ExecStart=/usr/lib/shoko-server/Shoko.CLI
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
