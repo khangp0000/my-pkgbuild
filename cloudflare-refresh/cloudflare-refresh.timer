@@ -1,0 +1,10 @@
+[Unit]
+Description=Refresh cloudflare timer
+
+[Timer]
+OnActiveSec=0
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target

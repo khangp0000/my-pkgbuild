@@ -1,0 +1,23 @@
+# Maintainer: Khang Phan <khangp0000@gmail.com>
+
+pkgname=cloudflare-refresh
+pkgver=v1.0.0
+pkgrel=1
+pkgdesc="Refreshing cloudflare for reptilian"
+depends=(bash firewalld curl)
+arch=('any')
+license=('GPL')
+source=(
+        'cloudflare-refresh.sh'
+        'cloudflare-refresh.service'
+        'cloudflare-refresh.timer')
+
+sha256sums=('219ebe51136f610ae2034edd80f88bf0573319b9b2113b7a4d98749a99cc9b52'
+            '3a60a5fe227d433a926a129f3afceb5b2780c7e0b3833873245253dc2b8327b8'
+            '9c8167c4dc92ae04c7a08ecae779663314fffc9433972f6fa85d005bb6bb1075')
+
+package() {
+    install -D -m 755 "${srcdir}/cloudflare-refresh.sh" "${pkgdir}/usr/lib/cloudflare-refresh/cloudflare-refresh.sh"
+    install -D -m 644 "${srcdir}/cloudflare-refresh.service" "${pkgdir}/usr/lib/systemd/system/cloudflare-refresh.service"
+    install -D -m 644 "${srcdir}/cloudflare-refresh.timer" "${pkgdir}/usr/lib/systemd/system/cloudflare-refresh.timer"
+}

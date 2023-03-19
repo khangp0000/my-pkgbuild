@@ -1,0 +1,9 @@
+[Unit]
+Description=Refresh cloudflare
+After=nginx.service
+After=firewalld.service
+After=fail2ban.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash /usr/lib/cloudflare-refresh/cloudflare-refresh.sh
