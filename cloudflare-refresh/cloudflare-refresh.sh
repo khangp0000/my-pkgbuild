@@ -30,6 +30,10 @@ for i in $ipv4_cloudflare; do
         firewall-cmd --permanent --zone=public --add-rich-rule 'rule family="ipv4" source address="'$i'" port port=443 protocol=tcp accept';
 done
 
+# Local Lan IP
+firewall-cmd --permanent --zone=public --add-rich-rule 'rule family="ipv4" source address="'192.168.1.0/24'" port port=80 protocol=tcp accept';
+firewall-cmd --permanent --zone=public --add-rich-rule 'rule family="ipv4" source address="'192.168.1.0/24'" port port=443 protocol=tcp accept';
+
 # SSH
 #firewall-cmd --permanent --zone=public --add-rich-rule 'rule family="ipv4" source address="myip" port port=22 protocol=tcp accept'
 #firewall-cmd --permanent --change-zone=eth0 --zone=public

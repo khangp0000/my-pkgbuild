@@ -1,7 +1,7 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=cloudflare-refresh
-pkgver=v1.0.0
+pkgver=v1.0.1
 pkgrel=1
 pkgdesc="Refreshing cloudflare for reptilian"
 depends=(bash firewalld curl)
@@ -12,7 +12,7 @@ source=(
         'cloudflare-refresh.service'
         'cloudflare-refresh.timer')
 
-sha256sums=('219ebe51136f610ae2034edd80f88bf0573319b9b2113b7a4d98749a99cc9b52'
+sha256sums=('497ed3baf21b01d384bcc1048a7d8e5a4631e099c7fd3d246187b1f2e94acbca'
             '3a60a5fe227d433a926a129f3afceb5b2780c7e0b3833873245253dc2b8327b8'
             '9c8167c4dc92ae04c7a08ecae779663314fffc9433972f6fa85d005bb6bb1075')
 
