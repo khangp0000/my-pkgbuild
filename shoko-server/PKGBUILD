@@ -2,9 +2,9 @@
 
 pkgname=shoko-server-git
 pkgver=v4.1.2.r661.g79486a4b
-pkgrel=2
+pkgrel=3
 pkgdesc="Anime cataloging service"
-depends=(mediainfo rhash shoko-web-dev-bin-git)
+depends=(mediainfo rhash shoko-web)
 optdepends=(
   'mono: to use avdump2'
 )

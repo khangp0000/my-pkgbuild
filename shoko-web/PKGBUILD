@@ -1,8 +1,8 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
-pkgname=shoko-web-dev-bin-git
+pkgname=shoko-web
 pkgver=v2.0.0_dev.50
-pkgrel=1
+pkgrel=4
 pkgdesc="Web ui for shoko-server"
 arch=('any')
 url="https://github.com/ShokoAnime/ShokoServer-WebUI"
