@@ -1,0 +1,45 @@
+# Maintainer: Khang Phan <khangp0000@gmail.com>
+
+pkgname=shoko-external-importer
+pkgver=v1.0.0.r1.gc17f11a
+pkgrel=1
+pkgdesc="Hardlinking stuff from sonarr/radarr to shoko"
+arch=('any')
+url="https://github.com/khangp0000/shoko-external-importer"
+license=('GPL')
+makedepends=(cargo)
+source=('git+https://github.com/khangp0000/shoko-external-importer.git'
+        'shoko-external-importer.service')
+
+sha256sums=('SKIP'
+            '628093b639516b07b4ce740c36c06219eb9002bc5070c7dae81b4990b8431ec9')
+
+prepare() {
+	cd "$srcdir/shoko-external-importer"
+    export RUSTUP_TOOLCHAIN=stable
+    cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
+}
+
+pkgver() {
+	cd "$srcdir/shoko-external-importer"
+    git describe --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+build() {
+	cd "$srcdir/shoko-external-importer"
+
+    export RUSTUP_TOOLCHAIN=stable
+    export CARGO_TARGET_DIR=target
+    cargo build --frozen --release
+}
+
+check() {
+	cd "$srcdir/shoko-external-importer"
+    export RUSTUP_TOOLCHAIN=stable
+    cargo test --frozen --all-features
+}
+
+package() {
+    install -Dm0755 "$srcdir/shoko-external-importer/target/release/shoko_external_importer" -t "$pkgdir/usr/bin/"
+    install -D -m 644 "${srcdir}/shoko-external-importer.service" "${pkgdir}/usr/lib/systemd/system/shoko-external-importer.service"
+}

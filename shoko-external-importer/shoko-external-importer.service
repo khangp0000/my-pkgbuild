@@ -1,0 +1,16 @@
+[Unit]
+Description=Used to import sonarr and radarr anime into Shoko
+Wants=network-online.target
+After=network-online.target
+Before=sonarr-anime.service radarr.service shoko-server.service
+
+[Service]
+Type=notify
+User=shoko
+Group=shoko
+SyslogIdentifier=shoko-external-importer
+ExecStart=/usr/bin/shoko_external_importer -w "/var/data/sonarr-anime/:/var/data/radarr-anime/" -s /var/data/shoko_drop_src -d /var/lib/shoko/.shoko-external-importer --daemon -i --systemd-notify
+TimeoutSec=30
+
+[Install]
+WantedBy=multi-user.target
