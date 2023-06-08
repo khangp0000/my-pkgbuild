@@ -29,8 +29,5 @@ package() {
     yarn install
     yarn build
 	mkdir -p "$pkgdir/usr/lib/shoko-server/webui"
-	cp "$srcdir/ShokoServer-WebUI/build/latest.zip" "$pkgdir/usr/lib/shoko-server/webui"
-    cd $pkgdir/usr/lib/shoko-server/webui
-    unzip -o latest.zip
-    rm latest.zip
+    cp -TR "$srcdir/ShokoServer-WebUI/dist" "$pkgdir/usr/lib/shoko-server/webui"
 }
