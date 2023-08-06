@@ -2,42 +2,25 @@
 #!/usr/bin/env bash
 
 # remove all public rules first
-IFS=$'\n'
-for i in $(firewall-cmd --list-rich-rules --zone=public | grep 'protocol="tcp" accept'); do
+IFS=$' '
+for i in $(firewall-cmd --list-sources --zone=cloudflare); do
         echo "removing '$i'"
-        firewall-cmd --permanent --zone=public --remove-rich-rule "$i"
+        firewall-cmd --permanent --zone=cloudflare --remove-source=$i
 done
-
-#echo "reloading..."
-#sudo firewall-cmd --reload
-#exit 1
 
 # add new rules
 
 ipv4_cloudflare=$(curl "https://www.cloudflare.com/ips-v4")
 
 # IPv4 HTTP
-echo "adding IPv4 HTTP"
+IFS=$'\n'
+echo "adding IPv4 to cloudflare zone"
 for i in $ipv4_cloudflare; do
         echo "adding '$i'"
-        firewall-cmd --permanent --zone=public --add-rich-rule 'rule family="ipv4" source address="'$i'" port port=80 protocol=tcp accept';
+        firewall-cmd --permanent --zone=cloudflare --add-source=$i;
 done
 
-# IPv4 HTTPS
-echo "adding IPv4 HTTPS"
-for i in $ipv4_cloudflare; do
-        echo "adding '$i'"
-        firewall-cmd --permanent --zone=public --add-rich-rule 'rule family="ipv4" source address="'$i'" port port=443 protocol=tcp accept';
-done
-
-# Local Lan IP
-firewall-cmd --permanent --zone=public --add-rich-rule 'rule family="ipv4" source address="'192.168.1.0/24'" port port=80 protocol=tcp accept';
-firewall-cmd --permanent --zone=public --add-rich-rule 'rule family="ipv4" source address="'192.168.1.0/24'" port port=443 protocol=tcp accept';
-
-# SSH
-#firewall-cmd --permanent --zone=public --add-rich-rule 'rule family="ipv4" source address="myip" port port=22 protocol=tcp accept'
-#firewall-cmd --permanent --change-zone=eth0 --zone=public
-
+# Nginx config whitelist
 echo "Updating nginx conf"
 nginx_tmpfile=$(mktemp)
 for i in $ipv4_cloudflare; do
