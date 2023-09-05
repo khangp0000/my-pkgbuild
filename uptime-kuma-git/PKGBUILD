@@ -2,7 +2,7 @@
 
 pkgname=uptime-kuma-git
 pkgver=1.21.2.r12.gbe7d3f61
-pkgrel=3
+pkgrel=5
 pkgdesc="Uptime Kuma!"
 arch=('any')
 url="https://github.com/louislam/uptime-kuma.git"
@@ -12,7 +12,8 @@ source=('git+https://github.com/louislam/uptime-kuma.git'
         'uptime-kuma.service'
         'uptime-kuma.sysusers'
         'uptime-kuma.tmpfiles')
-depends=('nodejs' 'npm')
+depends=(nodejs)
+makedepends=(pnpm)
 sha256sums=('SKIP'
             'fd563c26e1fd777091d077f05c852ad2910ed796b8b93c5e9f64fe1ab66170e0'
             '85fa2faae288db45fa18134bf823cd0b06896176f99d531cc7dfa13e7bf279b6'
@@ -24,14 +25,14 @@ options=(!strip)
 
 
 pkgver() {
-	cd "$srcdir/uptime-kuma"
+    cd "$srcdir/uptime-kuma"
     git describe --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
 }
 
 package() {
     cd $srcdir/uptime-kuma/
-    npm install
-    npm run build
+    pnpm install
+    pnpm run build
     mkdir -p "$pkgdir/usr/lib"
     cp -dr --no-preserve='ownership' "$srcdir/uptime-kuma/" "$pkgdir/usr/lib/uptime-kuma/"
     

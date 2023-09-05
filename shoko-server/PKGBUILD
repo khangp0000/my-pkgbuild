@@ -27,15 +27,15 @@ sha256sums=('SKIP'
             '3665bddb83f981cd9af209516495d17e2377b640427e180db8c637aa03282626')
 
 prepare() {
-	cd "$srcdir/ShokoServer"
+    cd "$srcdir/ShokoServer"
     git -c protocol.file.allow=always submodule update --init --recursive
 }
 
 pkgver() {
     >&2 echo "cd-ing into $srcdir/ShokoServer"
-	cd "$srcdir/ShokoServer"
+    cd "$srcdir/ShokoServer"
     rel_tag=$(git --no-pager tag --sort=-creatordate | grep -P "^[vV]\d+\.\d+\.\d+(\.\d+)?$" | head -n 1)
-	git describe --tags --match "$rel_tag" | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+    git describe --tags --match "$rel_tag" | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
 }
 
 build() {

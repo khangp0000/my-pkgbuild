@@ -15,18 +15,18 @@ sha256sums=('SKIP'
             '628093b639516b07b4ce740c36c06219eb9002bc5070c7dae81b4990b8431ec9')
 
 prepare() {
-	cd "$srcdir/shoko-external-importer"
+    cd "$srcdir/shoko-external-importer"
     export RUSTUP_TOOLCHAIN=stable
     cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
 }
 
 pkgver() {
-	cd "$srcdir/shoko-external-importer"
+    cd "$srcdir/shoko-external-importer"
     git describe --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
 }
 
 build() {
-	cd "$srcdir/shoko-external-importer"
+    cd "$srcdir/shoko-external-importer"
 
     export RUSTUP_TOOLCHAIN=stable
     export CARGO_TARGET_DIR=target
@@ -34,7 +34,7 @@ build() {
 }
 
 check() {
-	cd "$srcdir/shoko-external-importer"
+    cd "$srcdir/shoko-external-importer"
     export RUSTUP_TOOLCHAIN=stable
     cargo test --frozen --all-features
 }

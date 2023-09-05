@@ -1,33 +1,33 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=shoko-web-git
-pkgver=v2.0.0_dev.50
-pkgrel=3
+pkgver=v2.0.0_dev.142
+pkgrel=4
 pkgdesc="Web ui for shoko-server"
 arch=('any')
 url="https://github.com/ShokoAnime/ShokoServer-WebUI"
 license=('unknown')
-makedepends=(git yarn npm unzip)
+makedepends=(git pnpm unzip)
 source=('git+https://github.com/ShokoAnime/ShokoServer-WebUI.git')
 sha256sums=('SKIP')
 provides=('shoko-web')
 conflicts=('shoko-web')
 
 prepare() {
-	cd "$srcdir/ShokoServer-WebUI"
+    cd "$srcdir/ShokoServer-WebUI"
     git checkout $(git describe --tags --abbrev=0)
-    npm version "$(git describe --tags)" --no-git-tag-version
+    pnpm version "$(git describe --tags)" --no-git-tag-version
 }
 
 pkgver() {
-	cd "$srcdir/ShokoServer-WebUI"
+    cd "$srcdir/ShokoServer-WebUI"
     git describe --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
 }
 
 package() {
-	cd "$srcdir/ShokoServer-WebUI"
-    yarn install
-    yarn build
-	mkdir -p "$pkgdir/usr/lib/shoko-server/webui"
+    cd "$srcdir/ShokoServer-WebUI"
+    pnpm install
+    pnpm build
+    mkdir -p "$pkgdir/usr/lib/shoko-server/webui"
     cp -TR "$srcdir/ShokoServer-WebUI/dist" "$pkgdir/usr/lib/shoko-server/webui"
 }
