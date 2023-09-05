@@ -31,7 +31,7 @@ pkgver() {
 
 package() {
     cd $srcdir/uptime-kuma/
-    pnpm install
+    pnpm install --shamefully-hoist
     pnpm run build
     mkdir -p "$pkgdir/usr/lib"
     cp -dr --no-preserve='ownership' "$srcdir/uptime-kuma/" "$pkgdir/usr/lib/uptime-kuma/"
