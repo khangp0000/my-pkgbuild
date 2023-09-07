@@ -2,7 +2,7 @@
 
 pkgname=shoko-web-git
 pkgver=v2.0.0_dev.142
-pkgrel=4
+pkgrel=1
 pkgdesc="Web ui for shoko-server"
 arch=('any')
 url="https://github.com/ShokoAnime/ShokoServer-WebUI"
