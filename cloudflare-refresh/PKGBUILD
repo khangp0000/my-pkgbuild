@@ -2,7 +2,7 @@
 
 pkgname=cloudflare-refresh
 pkgver=v1.0.1
-pkgrel=3
+pkgrel=4
 pkgdesc="Refreshing cloudflare for reptilian"
 depends=(bash firewalld curl)
 arch=('any')
@@ -11,7 +11,7 @@ source=('cloudflare-refresh.sh'
         'cloudflare-refresh.service'
         'cloudflare-refresh.timer')
 
-sha256sums=('dbf582629a59fc8d53d2bd1763ceeae6cd1c6df664c65cb0d02624c9302685c6'
+sha256sums=('1797f708b177936842933f48e44e2e0bee68cfb4dd48eff0acd29b17c8b6d275'
             '3a60a5fe227d433a926a129f3afceb5b2780c7e0b3833873245253dc2b8327b8'
             '9c8167c4dc92ae04c7a08ecae779663314fffc9433972f6fa85d005bb6bb1075')
 

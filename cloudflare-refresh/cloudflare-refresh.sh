@@ -1,5 +1,6 @@
 
 #!/usr/bin/env bash
+set -e
 
 # remove all public rules first
 IFS=$' '
@@ -10,7 +11,7 @@ done
 
 # add new rules
 
-ipv4_cloudflare=$(curl -L "https://www.cloudflare.com/ips-v4")
+ipv4_cloudflare=$(curl -L -f "https://www.cloudflare.com/ips-v4")
 
 
 # IPv4 HTTP
