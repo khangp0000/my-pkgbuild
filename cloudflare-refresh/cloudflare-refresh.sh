@@ -11,6 +11,8 @@ done
 
 # add new rules
 
+# Download whitelist
+
 ipv4_cloudflare=$(curl -L -f "https://www.cloudflare.com/ips-v4")
 
 
@@ -30,7 +32,10 @@ for i in $ipv4_cloudflare; do
 done
 mv $nginx_tmpfile /etc/nginx/http/locations/cloudflare_ips.conf
 
+set +e
 echo "reloading..."
-firewall-cmd --reload || true
-systemctl restart fail2ban.service || true
-nginx -s reload || true
+firewall-cmd --reload
+systemctl restart fail2ban.service
+nginx -s reload
+
+exit 0

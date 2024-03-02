@@ -2,7 +2,7 @@
 Description=Refresh cloudflare timer
 
 [Timer]
-OnBootSec=0
+OnActiveSec=0
 OnCalendar=daily
 Persistent=true
 
