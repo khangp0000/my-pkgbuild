@@ -2,7 +2,7 @@
 
 pkgname=uptime-kuma-git
 pkgver=1.23.11.r363.gfdf562fe
-pkgrel=2
+pkgrel=3
 pkgdesc="Uptime Kuma!"
 arch=('any')
 url="https://github.com/louislam/uptime-kuma.git"
@@ -32,7 +32,7 @@ pkgver() {
 package() {
     cd $srcdir/uptime-kuma/
     pnpm import
-    pnpm install --shamefully-hoist --production
+    pnpm install --shamefully-hoist
     pnpm run build
     mkdir -p "$pkgdir/usr/lib"
     cp -dr --no-preserve='ownership' "$srcdir/uptime-kuma/" "$pkgdir/usr/lib/uptime-kuma/"
