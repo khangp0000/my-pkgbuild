@@ -1,8 +1,8 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=uptime-kuma-git
-pkgver=1.21.2.r12.gbe7d3f61
-pkgrel=5
+pkgver=1.23.11.r363.gfdf562fe
+pkgrel=2
 pkgdesc="Uptime Kuma!"
 arch=('any')
 url="https://github.com/louislam/uptime-kuma.git"
@@ -31,7 +31,8 @@ pkgver() {
 
 package() {
     cd $srcdir/uptime-kuma/
-    pnpm install --shamefully-hoist
+    pnpm import
+    pnpm install --shamefully-hoist --production
     pnpm run build
     mkdir -p "$pkgdir/usr/lib"
     cp -dr --no-preserve='ownership' "$srcdir/uptime-kuma/" "$pkgdir/usr/lib/uptime-kuma/"
