@@ -1,7 +1,7 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=shoko-server-git
-pkgver=v4.2.2.r694.g138997ec3
+pkgver=v4.2.2.r711.g2d11bd543
 pkgrel=2
 pkgdesc="Anime cataloging service"
 depends=(mediainfo rhash shoko-web)
@@ -49,7 +49,7 @@ build() {
     rel_sha=$(git rev-parse HEAD)
 
     # Build
-    dotnet publish -o build -c Release -r linux-x64 --self-contained Shoko.CLI "/p:Version=\"$rel_version\",InformationalVersion=\"channel=dev,commit=$rel_sha\""
+    dotnet publish -o build -c Release -r linux-x64 -f net8.0 --self-contained Shoko.CLI "/p:Version=\"$rel_version\",InformationalVersion=\"channel=dev,commit=$rel_sha\""
 
     # webui is part of dependency
     rm -rf "$srcdir/ShokoServer/build/webui/"
