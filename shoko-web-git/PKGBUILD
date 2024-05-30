@@ -2,7 +2,7 @@
 
 pkgname=shoko-web-git
 pkgver=v2.0.0_dev.142
-pkgrel=1
+pkgrel=2
 pkgdesc="Web ui for shoko-server"
 arch=('any')
 url="https://github.com/ShokoAnime/ShokoServer-WebUI"
@@ -25,6 +25,7 @@ pkgver() {
 }
 
 package() {
+    export UV_USE_IO_URING=0
     cd "$srcdir/ShokoServer-WebUI"
     pnpm install
     pnpm build
