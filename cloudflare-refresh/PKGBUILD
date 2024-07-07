@@ -1,22 +1,22 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=cloudflare-refresh
-pkgver=v1.0.1
-pkgrel=7
+pkgver=v1.0.2
+pkgrel=1
 pkgdesc="Refreshing cloudflare for reptilian"
-depends=(bash firewalld curl)
+depends=(python3 python-xmltodict firewalld)
 arch=('any')
 license=('GPL')
-source=('cloudflare-refresh.sh'
+source=('cloudflare-refresh.py'
         'cloudflare-refresh.service'
         'cloudflare-refresh.timer')
 
-sha256sums=('f2fb2313300d90f2af46d0eadc0ebc95be0572ae2c457ae247761927c8163ecf'
-            'd16ec4a8fe2417657e2c97467a641be8dbcbf0d5765f5e6a8d8237d9a0810e7f'
+sha256sums=('123b695d22fa97d5dc88bcd38bcb51f1514efc0b09af37115d17fc9990019a78'
+            'aeaa3269d16cbf94bda151610f3d116c72a7d8e69062b9c3d8a34da83409ef05'
             '9c8167c4dc92ae04c7a08ecae779663314fffc9433972f6fa85d005bb6bb1075')
 
 package() {
-    install -D -m 755 "${srcdir}/cloudflare-refresh.sh" "${pkgdir}/usr/lib/cloudflare-refresh/cloudflare-refresh.sh"
+    install -D -m 755 "${srcdir}/cloudflare-refresh.py" "${pkgdir}/usr/lib/cloudflare-refresh/cloudflare-refresh.py"
     install -D -m 644 "${srcdir}/cloudflare-refresh.service" "${pkgdir}/usr/lib/systemd/system/cloudflare-refresh.service"
     install -D -m 644 "${srcdir}/cloudflare-refresh.timer" "${pkgdir}/usr/lib/systemd/system/cloudflare-refresh.timer"
 }
