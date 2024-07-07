@@ -1,0 +1,22 @@
+# Maintainer: Khang Phan <khangp0000@gmail.com>
+
+pkgname=lan-firewall
+pkgver=v1.0.0
+pkgrel=1
+pkgdesc="Refreshing lan firewall for reptilian"
+depends=(python3 python-psutil python-xmltodict firewalld)
+arch=('any')
+license=('GPL')
+source=('lan-firewall.py'
+        'lan-firewall.service'
+        'lan-firewall.timer')
+
+sha256sums=('8721c2c92b7d623d5a967df925c625a1aeba1875e2b28e76ff24dba4a0f7c304'
+            '5cdef42e003751241b4771da60ca8fa68be772313df1b3e2d80146e388cee8dc'
+            '8f70d50ddbf8c683453fc6b2fe58cbfe9f4e0e26fe0495995dec597fb89075c6')
+
+package() {
+    install -D -m 755 "${srcdir}/lan-firewall.py" "${pkgdir}/usr/lib/lan-firewall/lan-firewall.py"
+    install -D -m 644 "${srcdir}/lan-firewall.service" "${pkgdir}/usr/lib/systemd/system/lan-firewall.service"
+    install -D -m 644 "${srcdir}/lan-firewall.timer" "${pkgdir}/usr/lib/systemd/system/lan-firewall.timer"
+}
