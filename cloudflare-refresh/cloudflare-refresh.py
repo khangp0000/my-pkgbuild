@@ -23,7 +23,9 @@ ipset = set(ipsv4 + ipsv6)
 with open('/etc/firewalld/zones/cloudflare.xml', "r") as fd:
     firewalld_cf = xmltodict.parse(fd.read())
 
-if isinstance(firewalld_cf['zone']['source'], dict):
+if 'source' not in firewalld_cf['zone'].keys():
+    currentAddrs = set()
+elif isinstance(firewalld_cf['zone']['source'], dict):
     currentAddrs = set(firewalld_cf['zone']['source']['@address'])
 elif isinstance(firewalld_cf['zone']['source'], list):
     currentAddrs = set(k['@address'] for k in firewalld_cf['zone']['source'])

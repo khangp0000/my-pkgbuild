@@ -1,8 +1,8 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=cloudflare-refresh
-pkgver=v1.0.2
-pkgrel=3
+pkgver=v1.0.3
+pkgrel=1
 pkgdesc="Refreshing cloudflare for reptilian"
 depends=(python3 python-xmltodict firewalld nginx)
 arch=('any')
@@ -11,7 +11,7 @@ source=('cloudflare-refresh.py'
         'cloudflare-refresh.service'
         'cloudflare-refresh.timer')
 
-sha256sums=('2a634c78ffe95ce589a38a50ebddae29f4adcdae7fd76415d03c28aa2488f15e'
+sha256sums=('a981fc18a95a74df1cfe3c5a7b7473d13abf53a164d3e856cec225f75a3c8754'
             'd8940e6225fd531f79fc98816f5a9505e4a3a6d5ebb04a9e9bfa68aa6eb811a6'
             '265b51c7ff89495a4cde5477ff1c0c6d518a4d72f5b355072aba654ba9953a8f')
 
