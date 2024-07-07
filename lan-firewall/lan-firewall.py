@@ -30,7 +30,6 @@ ipset = set(sanitized_addrs)
 
 with open('/etc/firewalld/zones/home.xml', "r") as fd:
     firewalld_cf = xmltodict.parse(fd.read())
-print(firewalld_cf['zone']['source'])
 
 if isinstance(firewalld_cf['zone']['source'], dict):
     currentAddrs = set(firewalld_cf['zone']['source']['@address'])
