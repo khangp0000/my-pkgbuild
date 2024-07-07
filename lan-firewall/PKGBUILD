@@ -2,7 +2,7 @@
 
 pkgname=lan-firewall
 pkgver=v1.0.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Refreshing lan firewall for reptilian"
 depends=(python3 python-psutil python-xmltodict firewalld)
 arch=('any')
@@ -12,8 +12,8 @@ source=('lan-firewall.py'
         'lan-firewall.timer')
 
 sha256sums=('6108ea79486236e6b11a3ef39e988b9a9fc57f65b078f0e5a3b1e3875666def8'
-            '5cdef42e003751241b4771da60ca8fa68be772313df1b3e2d80146e388cee8dc'
-            '8f70d50ddbf8c683453fc6b2fe58cbfe9f4e0e26fe0495995dec597fb89075c6')
+            '6f48dbadded3fac2371b38fcf99a34a4006b85975244ac2025aa102ea3a9d9aa'
+            '3abab8f36632cffa8153691fe6f3c118afebc1576f3bf6d310b2e56135ddbed7')
 
 package() {
     install -D -m 755 "${srcdir}/lan-firewall.py" "${pkgdir}/usr/lib/lan-firewall/lan-firewall.py"

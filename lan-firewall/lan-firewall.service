@@ -1,6 +1,7 @@
 [Unit]
 Description=Refresh lan firewall
-After=firewalld.service fail2ban.service
+Requires=systemd-networkd-wait-online@enp4s0
+After=systemd-networkd-wait-online@enp4s0 firewalld.service fail2ban.service
 
 [Service]
 Type=oneshot

@@ -27,7 +27,9 @@ if isinstance(firewalld_cf['zone']['source'], dict):
     currentAddrs = set(firewalld_cf['zone']['source']['@address'])
 elif isinstance(firewalld_cf['zone']['source'], list):
     currentAddrs = set(k['@address'] for k in firewalld_cf['zone']['source'])
-
+elif firewalld_cf['zone']['source'] is None:
+    currentAddrs = set()
+    
 if (currentAddrs != ipset):
     firewalld_cf['zone']['source'] = map(lambda s: {'@address': s}, ipsv4 + ipsv6)
 

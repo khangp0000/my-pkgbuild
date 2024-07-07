@@ -2,7 +2,7 @@
 Description=Refresh lan firewall config timer
 
 [Timer]
-OnActiveSec=0
+OnActiveSec=300
 OnCalendar=daily
 Persistent=true
 
