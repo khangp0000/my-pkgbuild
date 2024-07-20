@@ -1,7 +1,7 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=lan-firewall
-pkgver=v1.0.1
+pkgver=v1.0.2
 pkgrel=1
 pkgdesc="Refreshing lan firewall for reptilian"
 depends=(python3 python-psutil python-xmltodict firewalld)
@@ -12,7 +12,7 @@ source=('lan-firewall.py'
         'lan-firewall.timer')
 
 sha256sums=('7153ff39b1bd844096f46a09aa50cee4fa7299ffe8b62c2a6e15d3339d752ed9'
-            '6f48dbadded3fac2371b38fcf99a34a4006b85975244ac2025aa102ea3a9d9aa'
+            'be91f683c1497574a2e53c3e85691eb8246292563be6e82a01b38d77ac724764'
             '3abab8f36632cffa8153691fe6f3c118afebc1576f3bf6d310b2e56135ddbed7')
 
 package() {
