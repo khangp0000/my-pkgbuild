@@ -1,7 +1,7 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=k-backup
-pkgver=v1.0.0
+pkgver=v1.0.1
 pkgrel=1
 pkgdesc="Backup utility"
 arch=('any')
@@ -12,7 +12,7 @@ source=('git+https://github.com/khangp0000/k-backup.git'
         'k-backup@.service')
 
 sha256sums=('SKIP'
-            '19da327fc0990cc21e30804a1092f81daadeaafb98c1951517389229c10841b7')
+            '6d55354338a18f80d01423f7f73ea6b14ca6b35d1cfce7b11ba28584814943ed')
 
 prepare() {
     cd "$srcdir/k-backup"

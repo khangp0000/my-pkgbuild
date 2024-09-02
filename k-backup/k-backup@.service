@@ -5,6 +5,7 @@ After=basic.target
 [Service]
 Type=exec
 ExecStart=/usr/bin/k_backup -c /etc/k-backup/%i.yml
+UMask=027
 User=%i
 
 [Install]
