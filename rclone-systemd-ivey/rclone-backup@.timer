@@ -1,0 +1,11 @@
+[Unit]
+Description=Backup files timer
+
+[Timer]
+OnActiveSec=300
+OnCalendar=*-*-* 2/6:00:00 UTC
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+

@@ -1,0 +1,9 @@
+[Unit]
+Description=Backup files
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/rclone --config /etc/rclone-backup/%i.config sync /backup/%i %i:
+User=%i

@@ -1,0 +1,46 @@
+# Maintainer: Khang Phan <khangp0000@gmail.com>
+
+pkgname=k-backup
+pkgver=v1.0.0
+pkgrel=1
+pkgdesc="Backup utility"
+arch=('any')
+url="https://github.com/khangp0000/k-backup"
+license=('GPL')
+makedepends=(cargo)
+source=('git+https://github.com/khangp0000/k-backup.git'
+        'k-backup@.service')
+
+sha256sums=('SKIP'
+            '19da327fc0990cc21e30804a1092f81daadeaafb98c1951517389229c10841b7')
+
+prepare() {
+    cd "$srcdir/k-backup"
+    export RUSTUP_TOOLCHAIN=stable
+    cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
+}
+
+pkgver() {
+    cd "$srcdir/k-backup"
+    git describe --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+build() {
+    cd "$srcdir/k-backup"
+
+    export RUSTUP_TOOLCHAIN=stable
+    export CARGO_TARGET_DIR=target
+    cargo build --locked --release
+}
+
+check() {
+    cd "$srcdir/k-backup"
+    export RUSTUP_TOOLCHAIN=stable
+    cargo test --frozen --all-features
+}
+
+package() {
+    install -Dm0755 "$srcdir/k-backup/target/release/k_backup" -t "$pkgdir/usr/bin/"
+    install -Dm0755 "$srcdir/k-backup/config.example.yml" -t "$pkgdir/etc/k-backup/"
+    install -D -m 644 "${srcdir}/k-backup@.service" "${pkgdir}/usr/lib/systemd/system/k-backup@.service"
+}

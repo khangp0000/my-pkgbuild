@@ -1,0 +1,18 @@
+# Maintainer: Khang Phan <khangp0000@gmail.com>
+
+pkgname=rclone-systemd-ivey
+pkgver=v1.0.0
+pkgrel=1
+pkgdesc="Some systemd config for backup"
+arch=('any')
+license=('GPL')
+source=('rclone-backup@.service'
+        'rclone-backup@.timer')
+
+sha256sums=('511b5afd89ba8cab9a212e1e554552b900c10446a69e963e9ba12aefee397f0e'
+            '5e11ccdcac0b29a4229d12652810f9c937ebe84b646bf5973041b564b02d0836')
+
+package() {
+    install -D -m 644 "${srcdir}/rclone-backup@.service" "${pkgdir}/usr/lib/systemd/system/rclone-backup@.service"
+    install -D -m 644 "${srcdir}/rclone-backup@.timer" "${pkgdir}/usr/lib/systemd/system/rclone-backup@.timer"
+}
