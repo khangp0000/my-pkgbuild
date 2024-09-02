@@ -1,7 +1,7 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=rclone-systemd-ivey
-pkgver=v1.0.0
+pkgver=v1.0.1
 pkgrel=1
 pkgdesc="Some systemd config for backup"
 arch=('any')
@@ -9,7 +9,7 @@ license=('GPL')
 source=('rclone-backup@.service'
         'rclone-backup@.timer')
 
-sha256sums=('511b5afd89ba8cab9a212e1e554552b900c10446a69e963e9ba12aefee397f0e'
+sha256sums=('a93f2ed421a3e8ce67203d0124224eb54d4fd0f425a542de2f3ddf14ded4b7e9'
             '5e11ccdcac0b29a4229d12652810f9c937ebe84b646bf5973041b564b02d0836')
 
 package() {

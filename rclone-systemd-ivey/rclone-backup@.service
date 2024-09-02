@@ -5,5 +5,5 @@ After=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/rclone --config /etc/rclone-backup/%i.config sync /backup/%i %i:
+ExecStart=/usr/bin/rclone --config /etc/rclone-backup/%i/%i.config sync /backup/%i %i:
 User=%i
