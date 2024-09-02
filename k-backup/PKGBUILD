@@ -1,7 +1,7 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=k-backup
-pkgver=v1.0.1
+pkgver=v1.0.0
 pkgrel=1
 pkgdesc="Backup utility"
 arch=('any')
