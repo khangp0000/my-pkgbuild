@@ -1,8 +1,8 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=shoko-server-git
-pkgver=v4.2.2.r711.g2d11bd543
-pkgrel=2
+pkgver=v5.1.0.r867.g62c5d6419
+pkgrel=1
 pkgdesc="Anime cataloging service"
 depends=(mediainfo rhash shoko-web)
 optdepends=(
@@ -41,8 +41,8 @@ pkgver() {
 build() {
     cd "$srcdir/ShokoServer"
 
-    rel_tag=$(git --no-pager tag --sort=-creatordate | grep -P "^[vV]\d+\.\d+\.\d+(\.\d+)?$" | head -n 1)
-    rel_version=$(echo $rel_tag | sed -E 's/^([vV][0-9]+\.[0-9]+\.[0-9]+)$/\1.0/')
+    rel_tag=$(git --no-pager tag --sort=-creatordate | grep -P "^[vV]\d+\.\d+\.\d+([^\d\.][^\.]*)?(\.\d+)?$" | head -n 1)
+    rel_version=$(echo $rel_tag | sed -E 's/^([vV][0-9]+\.[0-9]+\.[0-9]+)([^0-9\.][^\.]*)?$/\1.0/' | sed -E 's/^([vV][0-9]+\.[0-9]+\.[0-9]+)([^0-9\.][^\.]*)?(\.[0-9]+)$/\1\3/')
 
     # Remove 'v'
     rel_version=${rel_version:1}
