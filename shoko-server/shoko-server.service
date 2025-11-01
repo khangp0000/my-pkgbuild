@@ -8,10 +8,12 @@ After=network-online.target
 
 [Service]
 Type=simple
+Environment=SENTRY_DSN=""
 User=shoko
 Group=shoko
 SyslogIdentifier=shoko
 ExecStart=/usr/lib/shoko-server/Shoko.CLI
+ExecStopPost=/usr/bin/sh -c 'test "$EXIT_CODE" != exited'
 Restart=on-failure
 
 [Install]

@@ -1,7 +1,7 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=shoko-server-git
-pkgver=v5.1.0.r867.g62c5d6419
+pkgver=v5.1.0.r1013.g5d643b8d8
 pkgrel=1
 pkgdesc="Anime cataloging service"
 depends=(mediainfo rhash shoko-web)
@@ -22,7 +22,7 @@ source=('git+https://github.com/ShokoAnime/ShokoServer.git'
 sha256sums=('SKIP'
             'SKIP'
             'SKIP'
-            '57d271c83b7a8f36739186e4a1a6d3b2cb4508b9580dbc86603a29927d6e412d'
+            '9593475852904abd872d5232f99c0e7d7840f7b801c174c43ae3be40ca6aa430'
             '09709df04602d42e67cb3c83d65c1c33c7e7ee0303d67002a38aa31b09250ad5'
             '3665bddb83f981cd9af209516495d17e2377b640427e180db8c637aa03282626')
 
