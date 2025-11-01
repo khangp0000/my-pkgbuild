@@ -2,7 +2,7 @@
 
 pkgname=shoko-server-git
 pkgver=v5.1.0.r1013.g5d643b8d8
-pkgrel=1
+pkgrel=2
 pkgdesc="Anime cataloging service"
 depends=(mediainfo rhash shoko-web)
 optdepends=(
