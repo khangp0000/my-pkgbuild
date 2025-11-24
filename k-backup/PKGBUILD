@@ -1,8 +1,8 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=k-backup
-pkgver=v1.0.0
-pkgrel=1
+pkgver=v2.0.0.r8.g248f80c
+pkgrel=2
 pkgdesc="Backup utility"
 arch=('any')
 url="https://github.com/khangp0000/k-backup"
@@ -15,6 +15,7 @@ sha256sums=('SKIP'
             '6d55354338a18f80d01423f7f73ea6b14ca6b35d1cfce7b11ba28584814943ed')
 
 prepare() {
+    CFLAGS+=' -ffat-lto-objects'
     cd "$srcdir/k-backup"
     export RUSTUP_TOOLCHAIN=stable
     cargo fetch --locked --target "$CARCH-unknown-linux-gnu"
