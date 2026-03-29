@@ -48,7 +48,7 @@ build() {
     rel_sha=$(git rev-parse HEAD)
 
     # Build
-    dotnet publish -o build -c Release -r linux-x64 -f net8.0 --self-contained Shoko.CLI "/p:Version=\"$rel_version\",InformationalVersion=\"channel=dev,commit=$rel_sha\""
+    dotnet publish -o build -p:AllowMissingPrunePackageData=true -c Release -r linux-x64 -f net8.0 --self-contained Shoko.CLI "/p:Version=\"$rel_version\",InformationalVersion=\"channel=dev,commit=$rel_sha\""
 
     # webui is part of dependency
     rm -rf "$srcdir/ShokoServer/build/webui/"
