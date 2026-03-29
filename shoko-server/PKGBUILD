@@ -1,8 +1,8 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=shoko-server-git
-pkgver=v6.0.0.dev.53
-pkgrel=1
+pkgver=v6.0.0.dev.54
+pkgrel=2
 pkgdesc="Anime cataloging service"
 depends=(mediainfo rhash shoko-web)
 optdepends=(
@@ -11,7 +11,7 @@ optdepends=(
 arch=('x86_64')
 url="https://github.com/ShokoAnime/ShokoServer"
 license=('MIT')
-makedepends=(git grep sed dotnet-sdk)
+makedepends=(git grep sed dotnet-sdk aspnet-targeting-pack)
 source=('git+https://github.com/ShokoAnime/ShokoServer.git'
         'git+https://github.com/ShokoAnime/Shoko.Commons.git'
         'git+https://github.com/ShokoAnime/Shoko.Models.git'
@@ -48,7 +48,7 @@ build() {
     rel_sha=$(git rev-parse HEAD)
 
     # Build
-    dotnet publish -o build -p:AllowMissingPrunePackageData=true -c Release -r linux-x64 -f net10.0 --self-contained Shoko.CLI "/p:Version=\"$rel_version\",InformationalVersion=\"channel=dev,commit=$rel_sha\""
+    dotnet publish -o build -c Release -r linux-x64 -f net10.0 --self-contained Shoko.CLI "/p:Version=\"$rel_version\",InformationalVersion=\"channel=dev,commit=$rel_sha\""
 
     # webui is part of dependency
     rm -rf "$srcdir/ShokoServer/build/webui/"
