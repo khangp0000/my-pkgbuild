@@ -1,8 +1,8 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=shoko-server-git
-pkgver=v5.1.0.r1013.g5d643b8d8
-pkgrel=2
+pkgver=v6.0.0.dev1
+pkgrel=1
 pkgdesc="Anime cataloging service"
 depends=(mediainfo rhash shoko-web)
 optdepends=(
@@ -34,7 +34,6 @@ prepare() {
 pkgver() {
     >&2 echo "cd-ing into $srcdir/ShokoServer"
     cd "$srcdir/ShokoServer"
-    rel_tag=$(git --no-pager tag --sort=-creatordate | grep -P "^[vV]\d+\.\d+\.\d+(\.\d+)?$" | head -n 1)
     git describe --tags --match "$rel_tag" | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
 }
 
