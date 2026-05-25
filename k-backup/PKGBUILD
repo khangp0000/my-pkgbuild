@@ -1,8 +1,8 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=k-backup
-pkgver=v2.0.0.r8.g248f80c
-pkgrel=3
+pkgver=v2.1.0.20260525031638
+pkgrel=2
 pkgdesc="Backup utility"
 arch=('any')
 url="https://github.com/khangp0000/k-backup"
