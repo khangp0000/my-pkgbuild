@@ -32,17 +32,17 @@ build() {
 
     export RUSTUP_TOOLCHAIN=stable
     export CARGO_TARGET_DIR=target
-    cargo build --locked --release
+    cargo build --locked --release --features fully-static
 }
 
 check() {
     cd "$srcdir/k-backup"
     export RUSTUP_TOOLCHAIN=stable
-    cargo test --frozen --all-features
+    cargo test --frozen --features "fully-static vendored-openssl"
 }
 
 package() {
     install -Dm0755 "$srcdir/k-backup/target/release/k_backup" -t "$pkgdir/usr/bin/"
-    install -Dm0755 "$srcdir/k-backup/config.example.yml" -t "$pkgdir/etc/k-backup/"
-    install -D -m 644 "${srcdir}/k-backup@.service" "${pkgdir}/usr/lib/systemd/system/k-backup@.service"
+    install -Dm0644 "$srcdir/k-backup/config.example.yml" -t "$pkgdir/etc/k-backup/"
+    install -Dm0644 "${srcdir}/k-backup@.service" "${pkgdir}/usr/lib/systemd/system/k-backup@.service"
 }
