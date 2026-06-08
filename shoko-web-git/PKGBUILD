@@ -2,12 +2,12 @@
 
 pkgname=shoko-web-git
 pkgver=v2.6.0.dev.54
-pkgrel=3
+pkgrel=4
 pkgdesc="Web ui for shoko-server"
 arch=('any')
 url="https://github.com/ShokoAnime/ShokoServer-WebUI"
 license=('unknown')
-makedepends=(git pnpm unzip)
+makedepends=(git pnpm yq)
 source=('git+https://github.com/ShokoAnime/ShokoServer-WebUI.git')
 sha256sums=('SKIP')
 provides=('shoko-web')
@@ -17,6 +17,16 @@ prepare() {
     cd "$srcdir/ShokoServer-WebUI"
     git checkout $(git describe --tags --abbrev=0)
     pnpm version "$(git describe --tags)" --no-git-tag-version
+    # Migrate pnpm config to v11 format if needed
+    if [[ $(pnpm --version | cut -d. -f1) -ge 11 ]] && ! yq -e '.allowBuilds' pnpm-workspace.yaml &>/dev/null; then
+        pnpx codemod run pnpm-v10-to-v11 --no-interactive
+        yq -yi '.allowBuilds["@sentry/cli"] = true
+              | .allowBuilds.dprint = true
+              | .allowBuilds.esbuild = true
+              | .allowBuilds["unrs-resolver"] = true' pnpm-workspace.yaml
+    fi
+
+    pnpm install --frozen-lockfile
 }
 
 pkgver() {
@@ -24,10 +34,12 @@ pkgver() {
     git describe --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
 }
 
-package() {
+build() {
     cd "$srcdir/ShokoServer-WebUI"
-    pnpm install --no-frozen-lockfile --config.only-built-dependencies-schema=false 
     pnpm build
+}
+
+package() {
     mkdir -p "$pkgdir/usr/lib/shoko-server/webui"
     cp -TR "$srcdir/ShokoServer-WebUI/dist" "$pkgdir/usr/lib/shoko-server/webui"
 }
