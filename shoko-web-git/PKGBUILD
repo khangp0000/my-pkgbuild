@@ -27,9 +27,7 @@ pkgver() {
 package() {
     # export UV_USE_IO_URING=0
     cd "$srcdir/ShokoServer-WebUI"
-    pnpm approve-builds @sentry/cli
-    pnpm approve-builds dprint
-    pnpm approve-builds unrs-resolver
+    pnpm approve-builds @sentry dprint unrs-resolver
     pnpm install 
     pnpm build
     mkdir -p "$pkgdir/usr/lib/shoko-server/webui"
