@@ -2,7 +2,7 @@
 
 pkgname=shoko-server-git
 pkgver=v6.0.0.dev.54
-pkgrel=2
+pkgrel=3
 pkgdesc="Anime cataloging service"
 depends=(mediainfo rhash shoko-web)
 optdepends=(
@@ -17,18 +17,25 @@ source=('git+https://github.com/ShokoAnime/ShokoServer.git'
         'git+https://github.com/ShokoAnime/Shoko.Models.git'
         'shoko-server.service'
         'shoko-server.sysusers'
-        'shoko-server.tmpfiles')
+        'shoko-server.tmpfiles'
+        'extract-plugin-images.cs')
 
 sha256sums=('SKIP'
             'SKIP'
             'SKIP'
             '9593475852904abd872d5232f99c0e7d7840f7b801c174c43ae3be40ca6aa430'
             '09709df04602d42e67cb3c83d65c1c33c7e7ee0303d67002a38aa31b09250ad5'
-            '3665bddb83f981cd9af209516495d17e2377b640427e180db8c637aa03282626')
+            '3665bddb83f981cd9af209516495d17e2377b640427e180db8c637aa03282626'
+            '0f54542b1e229c8d45045f30803a816c4f286b4059ddae4b681c21adf7aacbae')
 
 prepare() {
     cd "$srcdir/ShokoServer"
     git -c protocol.file.allow=always submodule update --init --recursive
+
+    # Fetch the latest stable release of each first-party plugin the official builds bundle
+    # (OfflineImporter, Tmdb, WebAOM) into .cache/plugins/, SHA-256 verified. Same step as the
+    # `plugins` job in .github/workflows/build-daily.yml; build() then bundles them offline.
+    dotnet msbuild ReleasedPlugins.targets -t:ShokoFetchReleasedPlugins -nologo -v:m
 }
 
 pkgver() {
@@ -48,10 +55,18 @@ build() {
     rel_sha=$(git rev-parse HEAD)
 
     # Build
-    dotnet publish -o build -c Release -r linux-x64 -f net10.0 --self-contained Shoko.CLI "/p:Version=\"$rel_version\",InformationalVersion=\"channel=dev,commit=$rel_sha\""
+    dotnet publish -o build -c Release -r linux-x64 -f net10.0 --self-contained Shoko.CLI "/p:Version=\"$rel_version\",InformationalVersion=\"channel=dev,commit=$rel_sha\"" \
+        -p:ShokoBundleReleasedPlugins=true -p:ShokoReleasedPluginsOffline=true
 
     # webui is part of dependency
     rm -rf "$srcdir/ShokoServer/build/webui/"
+
+    # Bundled (system) plugins embed their icon/thumbnail and the server extracts them
+    # beside the DLL on first start. /usr/lib is read-only for the service user, so the
+    # extraction throws and the server never finishes starting. Pre-extract them here.
+    if [ -d "$srcdir/ShokoServer/build/plugins" ]; then
+        dotnet run "$srcdir/extract-plugin-images.cs" -- "$srcdir/ShokoServer/build/plugins"
+    fi
 }
 
 package() {
