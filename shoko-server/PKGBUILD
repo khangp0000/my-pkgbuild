@@ -1,8 +1,8 @@
 # Maintainer: Khang Phan <khangp0000@gmail.com>
 
 pkgname=shoko-server-git
-pkgver=v6.0.0.dev.54
-pkgrel=3
+pkgver=v6.0.0.dev.562
+pkgrel=1
 pkgdesc="Anime cataloging service"
 depends=(mediainfo rhash shoko-web)
 optdepends=(
@@ -26,7 +26,7 @@ sha256sums=('SKIP'
             '9593475852904abd872d5232f99c0e7d7840f7b801c174c43ae3be40ca6aa430'
             '09709df04602d42e67cb3c83d65c1c33c7e7ee0303d67002a38aa31b09250ad5'
             '3665bddb83f981cd9af209516495d17e2377b640427e180db8c637aa03282626'
-            '0f54542b1e229c8d45045f30803a816c4f286b4059ddae4b681c21adf7aacbae')
+            '6611b6df6e369b1632d8af7d18d28cd4e865c5f67e82f670aaab102ae5c17dda')
 
 prepare() {
     cd "$srcdir/ShokoServer"
@@ -54,7 +54,11 @@ build() {
     rel_version=${rel_version:1}
     rel_sha=$(git rev-parse HEAD)
 
-    # Build
+    # Build. Start from an empty output dir: `dotnet publish -o` never deletes files, so a
+    # srcdir reused across makepkg runs (no -C) keeps DLLs from the previous publish, and a
+    # stale System.Configuration.ConfigurationManager 9.x next to NHibernate 5.7 (which needs
+    # 10.0.0.0) makes the server fail to start.
+    rm -rf build
     dotnet publish -o build -c Release -r linux-x64 -f net10.0 --self-contained Shoko.CLI "/p:Version=\"$rel_version\",InformationalVersion=\"channel=dev,commit=$rel_sha\"" \
         -p:ShokoBundleReleasedPlugins=true -p:ShokoReleasedPluginsOffline=true
 
