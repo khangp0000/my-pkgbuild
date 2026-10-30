@@ -13,8 +13,15 @@
 // Layouts, mirroring PackageImageLoader.Load:
 //   plugins/<Name>/<Name>.dll  ->  plugins/<Name>/icon.<ext>, thumbnail.<ext>
 //   plugins/<Name>.dll         ->  plugins/<Name>.icon.<ext>, <Name>.thumbnail.<ext>
+//
+// Which resource holds each image, in the order the server resolves it:
+//   1. the PackageIcon / PackageThumbnail assembly metadata stamped by
+//      Shoko.BuildTools.Targets (resource named <Assembly>.PluginIcon.<ext>)
+//   2. a resource whose name ends in .icon.<ext> / .thumbnail.<ext>, the
+//      convention plugins built before the build tools used
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -27,7 +34,6 @@ if (args.Length != 1 || !Directory.Exists(args[0]))
 }
 
 var root = Path.GetFullPath(args[0]);
-string[] kinds = ["icon", "thumbnail"];
 var written = 0;
 
 foreach (var dir in Directory.GetDirectories(root))
@@ -50,6 +56,8 @@ void Extract(string dll, Func<string, string> stemFor)
     var md = pe.GetMetadataReader();
     var assemblyName = md.GetString(md.GetAssemblyDefinition().Name);
 
+    var stamped = ReadStampedImageNames(md);
+
     foreach (var handle in md.ManifestResources)
     {
         var resource = md.GetManifestResource(handle);
@@ -63,15 +71,11 @@ void Extract(string dll, Func<string, string> stemFor)
         if (!name.StartsWith(assemblyName + ".", StringComparison.Ordinal))
             continue;
 
-        // <...>.<kind>.<ext>
-        var parts = name.Split('.');
-        if (parts.Length < 3)
-            continue;
-        var ext = parts[^1].ToLowerInvariant();
-        var kind = parts[^2].ToLowerInvariant();
-        if (!kinds.Contains(kind))
+        var kind = stamped.GetValueOrDefault(name) ?? KindFromName(name);
+        if (kind is null)
             continue;
 
+        var ext = Path.GetExtension(name).ToLowerInvariant();
         var stem = stemFor(kind);
         var stemDir = Path.GetDirectoryName(stem)!;
         var stemName = Path.GetFileName(stem);
@@ -79,11 +83,56 @@ void Extract(string dll, Func<string, string> stemFor)
         if (Directory.EnumerateFiles(stemDir, stemName + ".*").Any())
             continue;
 
-        var target = stem + "." + ext;
+        var target = stem + ext;
         File.WriteAllBytes(target, ReadResource(pe, resource.Offset));
         Console.WriteLine($"  {Path.GetFileName(dll)}: {name} -> {Path.GetRelativePath(root, target)}");
         written++;
     }
+}
+
+// <...>.<kind>.<ext> with kind icon/thumbnail, or the build tools' PluginIcon/PluginThumbnail.
+string? KindFromName(string name)
+{
+    var parts = name.Split('.');
+    if (parts.Length < 3)
+        return null;
+    return parts[^2].ToLowerInvariant() switch
+    {
+        "icon" or "pluginicon" => "icon",
+        "thumbnail" or "pluginthumbnail" => "thumbnail",
+        _ => null,
+    };
+}
+
+// [assembly: AssemblyMetadata("PackageIcon", "<resource>")] and PackageThumbnail,
+// as Shoko.BuildTools.Targets stamps them and PluginManager reads them first.
+static Dictionary<string, string> ReadStampedImageNames(MetadataReader md)
+{
+    var result = new Dictionary<string, string>(StringComparer.Ordinal);
+    foreach (var handle in md.GetAssemblyDefinition().GetCustomAttributes())
+    {
+        var attribute = md.GetCustomAttribute(handle);
+        if (attribute.Constructor.Kind != HandleKind.MemberReference)
+            continue;
+        var ctor = md.GetMemberReference((MemberReferenceHandle)attribute.Constructor);
+        if (ctor.Parent.Kind != HandleKind.TypeReference
+            || md.GetString(md.GetTypeReference((TypeReferenceHandle)ctor.Parent).Name) != "AssemblyMetadataAttribute")
+            continue;
+
+        // Blob: prolog 0x0001, then the two string arguments (key, value).
+        var reader = md.GetBlobReader(attribute.Value);
+        if (reader.ReadUInt16() != 1)
+            continue;
+        var key = reader.ReadSerializedString();
+        var value = reader.ReadSerializedString();
+        if (string.IsNullOrEmpty(value))
+            continue;
+        if (key == "PackageIcon")
+            result[value] = "icon";
+        else if (key == "PackageThumbnail")
+            result[value] = "thumbnail";
+    }
+    return result;
 }
 
 static byte[] ReadResource(PEReader pe, long offset)
